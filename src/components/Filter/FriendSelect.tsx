@@ -1,4 +1,4 @@
-import { FormItem, Select } from "@vkontakte/vkui";
+import { FilterSelect } from "./FilterSelect";
 
 enum FriendValues{
     all = 'all',
@@ -12,24 +12,17 @@ const FriendLabels = {
     [FriendValues.no]: 'Нету'
 }
 
-const ALL_COLORS = 'all'
-
-export const FriendSelect = () => {
+export const FriendSelect = ({updateFilter}: any) => {
 
     const getFriendOption = (friend: keyof typeof FriendLabels) => ({
         value: friend,
         label: FriendLabels?.[friend],
     })
 
-    return <FormItem htmlFor="friend-select-id"
-                     top="Есть ли друзья"
-            >
-                <Select id="friend-select-id"
-                        // onChange={onChange}
-                        value={ALL_COLORS}
-                        name="friend"
-                        required
-                        options={Object.values(FriendValues).map(getFriendOption)}
+    return <FilterSelect name="friend"
+                        title="Есть ли друзья"
+                        items={Object.values(FriendValues)}
+                        getOption={getFriendOption}
+                        onChange={updateFilter}
                 />
-            </FormItem>
 }

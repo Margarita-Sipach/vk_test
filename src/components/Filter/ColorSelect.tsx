@@ -1,4 +1,4 @@
-import { FormItem, Select } from "@vkontakte/vkui";
+import { FilterSelect } from "./FilterSelect";
 
 enum ColorLabels{
     all = "Все",
@@ -11,24 +11,17 @@ enum ColorLabels{
     orange = "Оранжевый",
 }
 
-const ALL_COLORS = 'all'
-
-export const ColorSelect = ({avatarColors}: {avatarColors: string[]}) => {
+export const ColorSelect = ({avatarColors, updateFilter}: any) => {
 
     const getColorOption = (color: string) => ({
         value: color,
         label: ColorLabels?.[color as keyof typeof ColorLabels] || color,
     })
 
-    return <FormItem htmlFor="color-select-id"
-                     top="Выберите цвет группы"
-            >
-                <Select id="color-select-id"
-                        // onChange={onChange}
-                        value={ALL_COLORS}
-                        name="color"
-                        required
-                        options={[ALL_COLORS, ...avatarColors].map(getColorOption)}
-                />
-            </FormItem>
+    return <FilterSelect title="Выберите цвет группы" 
+                        onChange={updateFilter}
+                        name="color" 
+                        getOption={getColorOption}
+                        items={avatarColors}
+            />
 }

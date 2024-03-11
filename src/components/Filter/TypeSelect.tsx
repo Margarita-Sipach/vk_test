@@ -1,4 +1,4 @@
-import { FormItem, Select } from "@vkontakte/vkui";
+import { FilterSelect } from "./FilterSelect";
 
 enum TypeValues{
     all = 'all',
@@ -12,23 +12,15 @@ const TypeLabels = {
     [TypeValues.opened]: 'Закрытая'
 }
 
-export const TypeSelect = () => {
+export const TypeSelect = ({updateFilter}: any) => {
 
     const getTypeOption = (type: TypeValues) => ({
         value: type,
         label: TypeLabels?.[type],
     })
 
-return<FormItem
-    htmlFor="type-select-id"
-    top="Выберите тип группы"
-  >
-    <Select
-      id="type-select-id"
-      // onChange={onChange}
-      value={TypeValues.all}
-      name="type"
-      required
-      options={Object.values(TypeValues).map(getTypeOption)}
-    />
-  </FormItem>}
+return <FilterSelect title="Выберите тип группы"
+name="type"
+items={Object.values(TypeValues)}
+getOption={getTypeOption} onChange={updateFilter}    />
+  }
