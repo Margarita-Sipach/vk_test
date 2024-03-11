@@ -1,6 +1,7 @@
+import { FilterSelectsNames } from ".";
 import { FilterSelect } from "./FilterSelect";
 
-enum FriendValues{
+export enum FriendValues{
     all = 'all',
     yes = 'yes',
     no = 'no'
@@ -19,7 +20,7 @@ export const FriendSelect = ({updateFilter}: any) => {
         label: FriendLabels?.[friend],
     })
 
-    return <FilterSelect name="friend"
+    return <FilterSelect name={FilterSelectsNames.friend}
                         title="Есть ли друзья"
                         items={Object.values(FriendValues)}
                         getOption={getFriendOption}

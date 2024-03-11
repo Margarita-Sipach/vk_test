@@ -29,9 +29,10 @@ export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
                     <Friends selected={selected} setSelected={setSelected} friends={friends}/>
                 </Tabs>}
                 <CardGrid size="l" spaced={true}>
-                    {selected  && friends?.map((friend: UserType) => (
-                        <Card><Div>{friend.first_name} {friend.last_name}</Div></Card>
-                    ))}
+                    {selected  && friends?.map((friend: UserType) => {
+                        const fullName = `${friend.first_name} ${friend.last_name}`
+                        return <Card key={fullName}><Div>{fullName}</Div></Card>
+                    })}
                 </CardGrid>
             </>
 }

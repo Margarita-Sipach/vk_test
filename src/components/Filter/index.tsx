@@ -4,6 +4,14 @@ import { ColorSelect } from "./ColorSelect";
 import { FriendSelect } from "./FriendSelect";
 import { useState } from "react";
 
+
+export enum FilterSelectsNames {
+    color = 'color',
+    friend = 'friend',
+    type = 'type',
+    map = "map"
+}
+
 interface FilterProps{
   updateFilter: any
   avatarColors: string[]

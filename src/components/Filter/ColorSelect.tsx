@@ -1,4 +1,5 @@
-import { FilterSelect } from "./FilterSelect";
+import { FilterSelectsNames } from ".";
+import { ALL_ITEMS, FilterSelect } from "./FilterSelect";
 
 enum ColorLabels{
     all = "Все",
@@ -20,8 +21,8 @@ export const ColorSelect = ({avatarColors, updateFilter}: any) => {
 
     return <FilterSelect title="Выберите цвет группы" 
                         onChange={updateFilter}
-                        name="color" 
+                        name={FilterSelectsNames.color} 
                         getOption={getColorOption}
-                        items={avatarColors}
+                        items={[ALL_ITEMS, ...avatarColors]}
             />
 }
