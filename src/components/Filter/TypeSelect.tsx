@@ -1,4 +1,5 @@
 import { FilterSelectsNames } from ".";
+import { UpdateFilter } from "../../type";
 import { FilterSelect } from "./FilterSelect";
 
 export enum TypeValues{
@@ -13,7 +14,7 @@ export const TypeLabels = {
     [TypeValues.opened]: 'Открытая'
 }
 
-export const TypeSelect = ({updateFilter}: any) => {
+export const TypeSelect = ({updateFilter}: {updateFilter: UpdateFilter}) => {
 
     const getTypeOption = (type: TypeValues) => ({
         value: type,

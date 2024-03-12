@@ -1,13 +1,15 @@
 import { CustomSelectOptionInterface, FormItem, Select } from "@vkontakte/vkui";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { UpdateFilter } from "../../type";
+import { FilterSelectsNames } from ".";
 
 export const ALL_ITEMS = 'all'
 
 interface FilterSelectProps{
     items: string[],
     title: string,
-    name: string,
-    onChange: any,
+    name: FilterSelectsNames,
+    onChange: UpdateFilter,
     getOption: (item: any) => CustomSelectOptionInterface
 }
 
@@ -15,9 +17,9 @@ interface FilterSelectProps{
 export const FilterSelect = ({items, title, name, onChange, getOption}: FilterSelectProps) => {
     const [value, setValue] = useState(ALL_ITEMS);
     
-    const handleChange = (e: any) => {
-        setValue(e.target.value)
-        onChange(name, e.target.value)
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        setValue(e.target?.value)
+        onChange(name, e.target?.value)
     }
     return <FormItem htmlFor={`${name}-select-id`}
                      top={title}

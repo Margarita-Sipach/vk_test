@@ -1,3 +1,5 @@
+import { FilterSelectsNames } from "./components/Filter"
+
 export interface GetGroupsResponse {
     result: 1 | 0,
     data?: GroupType[]
@@ -24,3 +26,5 @@ export interface GetGroupsResponse {
     first_name: string,
     last_name: string
   }
+
+  export type UpdateFilter = (name: FilterSelectsNames, value: string) => void

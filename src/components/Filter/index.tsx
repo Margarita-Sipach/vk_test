@@ -3,19 +3,19 @@ import { TypeSelect } from "./TypeSelect";
 import { ColorSelect } from "./ColorSelect";
 import { FriendSelect } from "./FriendSelect";
 import { useState } from "react";
+import { UpdateFilter } from "../../type";
 
 
 export enum FilterSelectsNames {
     color = 'color',
     friend = 'friend',
     type = 'type',
-    map = "map"
 }
 
 interface FilterProps{
-  updateFilter: any
+  updateFilter: UpdateFilter
   avatarColors: string[]
-  search: any
+  search: () => void
 }
 
 export const Filter = ({avatarColors, updateFilter, search}: FilterProps) => {

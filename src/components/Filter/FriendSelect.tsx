@@ -1,4 +1,5 @@
 import { FilterSelectsNames } from ".";
+import { UpdateFilter } from "../../type";
 import { FilterSelect } from "./FilterSelect";
 
 export enum FriendValues{
@@ -13,7 +14,7 @@ const FriendLabels = {
     [FriendValues.no]: 'Нету'
 }
 
-export const FriendSelect = ({updateFilter}: any) => {
+export const FriendSelect = ({updateFilter}: {updateFilter: UpdateFilter}) => {
 
     const getFriendOption = (friend: keyof typeof FriendLabels) => ({
         value: friend,

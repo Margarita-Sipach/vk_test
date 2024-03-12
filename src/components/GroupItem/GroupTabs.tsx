@@ -1,10 +1,10 @@
 import { Card, CardGrid, Div, Tabs, TabsItem } from "@vkontakte/vkui"
 import { GroupTabsType, UserType } from "../../type"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 
 interface FriendsType{
     selected: boolean
-    setSelected: any
+    setSelected: Dispatch<SetStateAction<boolean>>
     friends?: UserType[]
 }
 

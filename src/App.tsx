@@ -16,39 +16,43 @@ import { TypeValues } from './components/Filter/TypeSelect';
 import { FriendValues } from './components/Filter/FriendSelect';
 
 const App = () => {
-    const initFilterParams = Object.fromEntries(Object.values(FilterSelectsNames).map(i => [i, ALL_ITEMS]))
-    const avatarColors: any[] = [...new Set(groups.map(group => group.avatar_color).filter(i => !!i))]
+    interface FilterParams{
+        [FilterSelectsNames.type]: TypeValues
+        [FilterSelectsNames.color]: string
+        [FilterSelectsNames.friend]: FriendValues
+    }
 
-    type FilterParams = Record<FilterSelectsNames, any>
+    const initFilterParams: FilterParams = Object.fromEntries(Object.values(FilterSelectsNames).map(i => [i, ALL_ITEMS])) as unknown as FilterParams
+    const avatarColors: string[] = [...new Set(groups.map(group => group.avatar_color || '').filter(i => i))]
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string>('');
     const [data, setData] = useState<GetGroupsResponse>({result: 0});
-    const [filterParams, setFilterParams] = useState<FilterParams>(initFilterParams as FilterParams)
+    const [filterParams, setFilterParams] = useState(initFilterParams)
 
     const filterByType = (groups: GroupType[], param: TypeValues) => {
-        console.log(groups.filter(group => param === TypeValues.closed && group.closed || param === TypeValues.opened && !group.closed)
-        )
         return groups.filter(group => param === TypeValues.closed && group.closed || param === TypeValues.opened && !group.closed)
     }
 
-    const filterByColor = (groups: GroupType[], param: typeof avatarColors) => {
-        return groups.filter(group => group.avatar_color === param as any)
+    const filterByColor = (groups: GroupType[], param: string) => {
+        return groups.filter(group => group.avatar_color === param)
     }
 
     const filterByFriend = (groups: GroupType[], param: FriendValues) => {
         return groups.filter(group => param === FriendValues.yes && group.friends || param === FriendValues.no && !group.friends)
     }
 
-    const filterByParam = (groups: GroupType[], param: TypeValues | FriendValues | typeof avatarColors, clb: any) => {
+    type FilterBy<T, > = (groups: GroupType[], param: T) => GroupType[]
+
+    const filterByParam = <T, >(groups: GroupType[], param: T, clb: FilterBy<T>) => {
         if(param === ALL_ITEMS) return groups
         return clb(groups, param)
     }
 
     const filterGroups = (groups: GroupType[], params: FilterParams) => {
-        groups = filterByParam(groups, params.type, filterByType)
-        groups = filterByParam(groups, params.color, filterByColor)
-        groups = filterByParam(groups, params.friend, filterByFriend)
+        groups = filterByParam<TypeValues>(groups, params.type, filterByType)
+        groups = filterByParam<string>(groups, params.color, filterByColor)
+        groups = filterByParam<FriendValues>(groups, params.friend, filterByFriend)
         return groups
     }
 
@@ -66,7 +70,7 @@ const App = () => {
             }, 1000)
 
         }catch(e){
-            setError(e as any)
+            if(e instanceof Error) setError(e.message)
             setLoading(false)
         }
         

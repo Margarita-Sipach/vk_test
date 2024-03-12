@@ -1,4 +1,5 @@
 import { FilterSelectsNames } from ".";
+import { UpdateFilter } from "../../type";
 import { ALL_ITEMS, FilterSelect } from "./FilterSelect";
 
 enum ColorLabels{
@@ -12,7 +13,12 @@ enum ColorLabels{
     orange = "Оранжевый",
 }
 
-export const ColorSelect = ({avatarColors, updateFilter}: any) => {
+interface ColorSelectProps{
+    updateFilter: UpdateFilter
+    avatarColors: string[]
+}
+
+export const ColorSelect = ({avatarColors, updateFilter}: ColorSelectProps) => {
 
     const getColorOption = (color: string) => ({
         value: color,
