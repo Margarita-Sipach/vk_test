@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { FilterSelectsNames } from ".";
 import { FilterSelect } from "./FilterSelect";
 
@@ -13,7 +14,7 @@ const FriendLabels = {
     [FriendValues.no]: 'Нету'
 }
 
-export const FriendSelect = () => {
+export const FriendSelect = memo(() => {
 
     const getFriendOption = (friend: keyof typeof FriendLabels) => ({
         value: friend,
@@ -25,4 +26,4 @@ export const FriendSelect = () => {
                         items={Object.values(FriendValues)}
                         getOption={getFriendOption}
                 />
-}
+})

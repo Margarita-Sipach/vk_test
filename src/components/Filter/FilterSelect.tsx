@@ -1,5 +1,5 @@
 import { CustomSelectOptionInterface, FormItem, Select } from "@vkontakte/vkui";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, memo, useContext, useState } from "react";
 import { FilterSelectsNames } from ".";
 import { Context } from "../../App";
 
@@ -13,7 +13,7 @@ interface FilterSelectProps{
 }
 
 
-export const FilterSelect = ({items, title, name, getOption}: FilterSelectProps) => {
+export const FilterSelect = memo(({items, title, name, getOption}: FilterSelectProps) => {
     const [value, setValue] = useState(ALL_ITEMS);
 
     const {updateFilter} = useContext(Context)
@@ -34,4 +34,4 @@ export const FilterSelect = ({items, title, name, getOption}: FilterSelectProps)
                         options={items.map(getOption)}
                 />
             </FormItem>
-}
+})

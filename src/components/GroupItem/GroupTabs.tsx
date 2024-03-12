@@ -1,6 +1,6 @@
 import { Card, CardGrid, Div, Tabs, TabsItem } from "@vkontakte/vkui"
 import { GroupTabsType, UserType } from "../../type"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, memo, useState } from "react"
 
 interface FriendsType{
     selected: boolean
@@ -8,7 +8,7 @@ interface FriendsType{
     friends?: UserType[]
 }
 
-export const Friends = ({selected, setSelected, friends} : FriendsType) => (
+export const Friends = memo(({selected, setSelected, friends} : FriendsType) => (
     friends?.length &&  <TabsItem selected={selected}
                                 id="tab-friends"
                                 aria-controls="tab-content-friends"
@@ -16,15 +16,15 @@ export const Friends = ({selected, setSelected, friends} : FriendsType) => (
                         >
                             Друзья: {friends?.length}
                         </TabsItem>
-)
+))
 
-export const Members = ({members_count}: {members_count: number}) => (
+export const Members = memo(({members_count}: {members_count: number}) => (
     <TabsItem id="tab-members" aria-controls="tab-members">
         Участники: {members_count}
     </TabsItem>
-)
+))
 
-export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
+export const GroupTabs = memo(({members_count, friends}: GroupTabsType) => {
     const [selected, setSelected] = useState(false)
     
     return  <>   
@@ -43,4 +43,4 @@ export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
                     })}
                 </CardGrid>
             </>
-}
+})

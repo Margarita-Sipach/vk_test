@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { FilterSelectsNames } from ".";
 import { FilterSelect } from "./FilterSelect";
 
@@ -13,7 +14,7 @@ export const TypeLabels = {
     [TypeValues.opened]: 'Открытая'
 }
 
-export const TypeSelect = () => {
+export const TypeSelect = memo(() => {
 
     const getTypeOption = (type: TypeValues) => ({
         value: type,
@@ -25,4 +26,4 @@ export const TypeSelect = () => {
                     items={Object.values(TypeValues)}
                     getOption={getTypeOption} 
         />
-  }
+  })

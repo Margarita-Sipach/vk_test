@@ -2,7 +2,7 @@ import { Button, FormItem } from "@vkontakte/vkui";
 import { TypeSelect, TypeValues } from "./TypeSelect";
 import { ColorSelect } from "./ColorSelect";
 import { FriendSelect, FriendValues } from "./FriendSelect";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { Context } from "../../App";
 import { getGroupsResponse } from "../../api/getGroups";
 
@@ -18,7 +18,7 @@ export enum FilterSelectsNames {
     type = 'type',
 }
 
-export const Filter = () => {
+export const Filter = memo(() => {
   const {filterParams, setLoading, setGroups} = useContext(Context)
 
   const search = () => {
@@ -38,4 +38,4 @@ export const Filter = () => {
                   <Button type="submit" size="l" onClick={search} stretched>Искать</Button>
               </FormItem>
           </form>
-)}
+)})

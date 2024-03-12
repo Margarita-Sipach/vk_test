@@ -2,8 +2,9 @@ import { Avatar, SimpleCell } from "@vkontakte/vkui";
 import { GroupHeaderType } from "../../type";
 import { InitialsAvatarTextGradients } from "@vkontakte/vkui/dist/components/Avatar/Avatar";
 import { TypeLabels } from "../Filter/TypeSelect";
+import { memo } from "react";
 
-export const GroupHeader = ({name, avatar_color, closed}: GroupHeaderType) => {
+export const GroupHeader = memo(({name, avatar_color, closed}: GroupHeaderType) => {
     const initials = name.split(' ').map(i => i[0]).join('').toUpperCase() 
     const AvatarCell = () => <Avatar size={100} 
                                      src="#" 
@@ -16,4 +17,4 @@ export const GroupHeader = ({name, avatar_color, closed}: GroupHeaderType) => {
             >
                 {name}
             </SimpleCell>
-}
+})

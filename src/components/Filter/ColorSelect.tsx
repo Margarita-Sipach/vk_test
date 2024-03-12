@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { FilterSelectsNames } from ".";
 import { ALL_ITEMS, FilterSelect } from "./FilterSelect";
 import { Context } from "../../App";
@@ -14,7 +14,7 @@ enum ColorLabels{
     orange = "Оранжевый",
 }
 
-export const ColorSelect = () => {
+export const ColorSelect = memo(() => {
     const {colors} = useContext(Context)
 
     const getColorOption = (color: string) => ({
@@ -27,4 +27,4 @@ export const ColorSelect = () => {
                         getOption={getColorOption}
                         items={[ALL_ITEMS, ...colors]}
             />
-}
+})
