@@ -1,66 +1,71 @@
-import {
-  AppRoot,
-  View,
-  Panel,
-} from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css'
-import { Filter, FilterParams, FilterSelectsNames } from './components/Filter';
-import { createContext, useEffect, useState } from 'react';
-import { GetGroupsResponse } from './type';
-import { ALL_ITEMS } from './components/Filter/FilterSelect';
-import { getGroupsResponse, isResponseSuccess } from './api/getGroups';
-import { GroupSection } from './components/GroupSection';
+import { AppRoot, View, Panel } from "@vkontakte/vkui";
+import "@vkontakte/vkui/dist/vkui.css";
+import { Filter, FilterParams, FilterSelectsNames } from "./components/Filter";
+import { createContext, useEffect, useState } from "react";
+import { GetGroupsResponse } from "./type";
+import { ALL_ITEMS } from "./components/Filter/FilterSelect";
+import { getGroupsResponse, isResponseSuccess } from "./api/getGroups";
+import { GroupSection } from "./components/GroupSection";
 
-interface ContextType{
-    filterParams: FilterParams,
-    updateFilter: (name: FilterSelectsNames, value: string) => void,
-    groups: GetGroupsResponse,
-    setGroups: (i: GetGroupsResponse) => void,
-    loading: boolean,
-    setLoading: (i: boolean) => void,
-    colors: string[]
+interface ContextType {
+  filterParams: FilterParams;
+  updateFilter: (name: FilterSelectsNames, value: string) => void;
+  groups: GetGroupsResponse;
+  setGroups: (i: GetGroupsResponse) => void;
+  loading: boolean;
+  setLoading: (i: boolean) => void;
+  colors: string[];
 }
 
 export const Context = createContext<ContextType>({} as ContextType);
 
 const App = () => {
-    const initFilterParams: FilterParams = Object.fromEntries(Object.values(FilterSelectsNames).map(i => [i, ALL_ITEMS])) as unknown as FilterParams
+    const initFilterParams: FilterParams = Object.fromEntries(
+        Object.values(FilterSelectsNames).map((i) => [i, ALL_ITEMS])
+    ) as unknown as FilterParams;
 
     const [filterParams, setFilterParams] = useState(initFilterParams);
-    const [groups, setGroups] = useState<GetGroupsResponse>({result: 0});
+    const [groups, setGroups] = useState<GetGroupsResponse>({ result: 0 });
     const [colors, setColors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true)
-        getGroupsResponse(filterParams).then(groups => {
-            setGroups(groups)
-            isResponseSuccess(groups) && setColors([...new Set(groups.data!.map(group => group.avatar_color || '').filter(i => i))])
-            setLoading(false)
-        })
-    }, [])
+        setLoading(true);
+        getGroupsResponse(filterParams).then((groups) => {
+            setGroups(groups);
+            isResponseSuccess(groups) &&
+            setColors([
+                ...new Set(
+                groups
+                    .data!.map((group) => group.avatar_color || "")
+                    .filter((i) => i)
+                ),
+            ]);
+            setLoading(false);
+        });
+    }, []);
 
     const updateFilter = (name: FilterSelectsNames, value: string) => {
-        setFilterParams({...filterParams, [name]: value})
-    }
+        setFilterParams({ ...filterParams, [name]: value });
+    };
 
     const initContext = {
         filterParams,
         updateFilter,
         groups,
         setGroups,
-        loading, 
+        loading,
         setLoading,
-        colors
-    }
+        colors,
+    };
 
     return (
         <Context.Provider value={initContext}>
             <AppRoot>
-                <View activePanel='groupsSection'>
+                <View activePanel="groupsSection">
                     <Panel id="groupsSection">
-                        <Filter/>
-                        <GroupSection/>
+                        <Filter />
+                        <GroupSection />
                     </Panel>
                 </View>
             </AppRoot>
@@ -68,4 +73,4 @@ const App = () => {
     );
 };
 
-export default App
+export default App;

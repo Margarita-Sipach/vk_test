@@ -4,17 +4,29 @@ import { InitialsAvatarTextGradients } from "@vkontakte/vkui/dist/components/Ava
 import { TypeLabels } from "../Filter/TypeSelect";
 import { memo } from "react";
 
-export const GroupHeader = memo(({name, avatar_color, closed}: GroupHeaderType) => {
-    const initials = name.split(' ').map(i => i[0]).join('').toUpperCase() 
-    const AvatarCell = () => <Avatar size={100} 
-                                     src="#" 
-                                     initials={initials} 
-                                     gradientColor={avatar_color as InitialsAvatarTextGradients} 
-                            />
+export const GroupHeader = memo(
+    ({ name, avatar_color, closed }: GroupHeaderType) => {
+        const initials = name
+            .split(" ")
+            .map((i) => i[0])
+            .join("")
+            .toUpperCase();
+        const AvatarCell = () => (
+            <Avatar
+                size={100}
+                src="#"
+                initials={initials}
+                gradientColor={avatar_color as InitialsAvatarTextGradients}
+            />
+        );
 
-    return  <SimpleCell before={<AvatarCell/>} 
-                        subtitle={TypeLabels[closed ? 'closed' : 'opened']}
+        return (
+            <SimpleCell
+                before={<AvatarCell />}
+                subtitle={TypeLabels[closed ? "closed" : "opened"]}
             >
                 {name}
             </SimpleCell>
-})
+        );
+    }
+);
