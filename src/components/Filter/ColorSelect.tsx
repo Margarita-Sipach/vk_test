@@ -1,6 +1,7 @@
+import { useContext } from "react";
 import { FilterSelectsNames } from ".";
-import { UpdateFilter } from "../../type";
 import { ALL_ITEMS, FilterSelect } from "./FilterSelect";
+import { Context } from "../../App";
 
 enum ColorLabels{
     all = "Все",
@@ -13,12 +14,8 @@ enum ColorLabels{
     orange = "Оранжевый",
 }
 
-interface ColorSelectProps{
-    updateFilter: UpdateFilter
-    avatarColors: string[]
-}
-
-export const ColorSelect = ({avatarColors, updateFilter}: ColorSelectProps) => {
+export const ColorSelect = () => {
+    const {colors} = useContext(Context)
 
     const getColorOption = (color: string) => ({
         value: color,
@@ -26,9 +23,8 @@ export const ColorSelect = ({avatarColors, updateFilter}: ColorSelectProps) => {
     })
 
     return <FilterSelect title="Выберите цвет группы" 
-                        onChange={updateFilter}
                         name={FilterSelectsNames.color} 
                         getOption={getColorOption}
-                        items={[ALL_ITEMS, ...avatarColors]}
+                        items={[ALL_ITEMS, ...colors]}
             />
 }

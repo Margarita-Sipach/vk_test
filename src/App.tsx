@@ -2,108 +2,69 @@ import {
   AppRoot,
   View,
   Panel,
-  Spinner,
-  Div,
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css'
-import groups from './groups.json'
-import { GroupItem } from './components/GroupItem';
-import { Filter, FilterSelectsNames } from './components/Filter';
-import { useEffect, useState } from 'react';
-import { GetGroupsResponse, GroupType } from './type';
+import { Filter, FilterParams, FilterSelectsNames } from './components/Filter';
+import { createContext, useEffect, useState } from 'react';
+import { GetGroupsResponse } from './type';
 import { ALL_ITEMS } from './components/Filter/FilterSelect';
-import { TypeValues } from './components/Filter/TypeSelect';
-import { FriendValues } from './components/Filter/FriendSelect';
+import { getGroupsResponse } from './api/getGroups';
+import { GroupSection } from './components/GroupSection';
+
+interface ContextType{
+    filterParams: FilterParams,
+    updateFilter: (name: FilterSelectsNames, value: string) => void,
+    groups: GetGroupsResponse,
+    setGroups: (i: GetGroupsResponse) => void,
+    loading: boolean,
+    setLoading: (i: boolean) => void,
+    colors: string[]
+}
+
+export const Context = createContext<ContextType>({} as ContextType);
 
 const App = () => {
-    interface FilterParams{
-        [FilterSelectsNames.type]: TypeValues
-        [FilterSelectsNames.color]: string
-        [FilterSelectsNames.friend]: FriendValues
-    }
-
     const initFilterParams: FilterParams = Object.fromEntries(Object.values(FilterSelectsNames).map(i => [i, ALL_ITEMS])) as unknown as FilterParams
-    const avatarColors: string[] = [...new Set(groups.map(group => group.avatar_color || '').filter(i => i))]
 
+    const [filterParams, setFilterParams] = useState(initFilterParams);
+    const [groups, setGroups] = useState<GetGroupsResponse>({result: 0});
+    const [colors, setColors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string>('');
-    const [data, setData] = useState<GetGroupsResponse>({result: 0});
-    const [filterParams, setFilterParams] = useState(initFilterParams)
-
-    const filterByType = (groups: GroupType[], param: TypeValues) => {
-        return groups.filter(group => param === TypeValues.closed && group.closed || param === TypeValues.opened && !group.closed)
-    }
-
-    const filterByColor = (groups: GroupType[], param: string) => {
-        return groups.filter(group => group.avatar_color === param)
-    }
-
-    const filterByFriend = (groups: GroupType[], param: FriendValues) => {
-        return groups.filter(group => param === FriendValues.yes && group.friends || param === FriendValues.no && !group.friends)
-    }
-
-    type FilterBy<T, > = (groups: GroupType[], param: T) => GroupType[]
-
-    const filterByParam = <T, >(groups: GroupType[], param: T, clb: FilterBy<T>) => {
-        if(param === ALL_ITEMS) return groups
-        return clb(groups, param)
-    }
-
-    const filterGroups = (groups: GroupType[], params: FilterParams) => {
-        groups = filterByParam<TypeValues>(groups, params.type, filterByType)
-        groups = filterByParam<string>(groups, params.color, filterByColor)
-        groups = filterByParam<FriendValues>(groups, params.friend, filterByFriend)
-        return groups
-    }
-
-    const getGroupsResponse = (groups: GroupType[], params: FilterParams) => {
-        const result = 1;
-        const data = filterGroups(groups, params)
-        try{
-            setLoading(true)
-        
-            const id = setTimeout(() => {
-                if(!result && !data) throw new Error("Нет данных")
-                setData({result, data})
-                setLoading(false)
-                clearTimeout(id)
-            }, 1000)
-
-        }catch(e){
-            if(e instanceof Error) setError(e.message)
-            setLoading(false)
-        }
-        
-    }
 
     useEffect(() => {
-        getGroupsResponse(groups, filterParams)
+        setLoading(true)
+        getGroupsResponse(filterParams).then(groups => {
+            setGroups(groups)
+            groups.result && groups.data && setColors([...new Set(groups.data.map(group => group.avatar_color || '').filter(i => i))])
+            setLoading(false)
+        })
     }, [])
 
     const updateFilter = (name: FilterSelectsNames, value: string) => {
         setFilterParams({...filterParams, [name]: value})
     }
 
-    const search = () => {
-        getGroupsResponse(groups, filterParams)
+    const initContext = {
+        filterParams,
+        updateFilter,
+        groups,
+        setGroups,
+        loading, 
+        setLoading,
+        colors
     }
 
-
-
     return (
-        <AppRoot>
-            <View activePanel='groupsSection'>
-                <Panel id="groupsSection">
-                    <Filter avatarColors={avatarColors} updateFilter={updateFilter} search={search}/>
-                    {
-                        loading ? <Spinner/> 
-                        : error ? <Div>{error}</Div>
-                        : data?.data?.length ? data?.data?.map(group => <GroupItem {...group} key={group.id}/>)
-                        : <Div>Нет данных</Div>
-                    }
-                </Panel>
-            </View>
-        </AppRoot>
+        <Context.Provider value={initContext}>
+            <AppRoot>
+                <View activePanel='groupsSection'>
+                    <Panel id="groupsSection">
+                        <Filter/>
+                        <GroupSection/>
+                    </Panel>
+                </View>
+            </AppRoot>
+        </Context.Provider>
     );
 };
 

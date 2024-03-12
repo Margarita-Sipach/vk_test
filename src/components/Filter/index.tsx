@@ -1,10 +1,18 @@
 import { Button, FormItem } from "@vkontakte/vkui";
-import { TypeSelect } from "./TypeSelect";
+import { TypeSelect, TypeValues } from "./TypeSelect";
 import { ColorSelect } from "./ColorSelect";
-import { FriendSelect } from "./FriendSelect";
-import { useState } from "react";
-import { UpdateFilter } from "../../type";
+import { FriendSelect, FriendValues } from "./FriendSelect";
+import { useContext, useState } from "react";
+import { GroupType, UpdateFilter } from "../../type";
+import { ALL_ITEMS } from "./FilterSelect";
+import { Context } from "../../App";
+import { getGroupsResponse } from "../../api/getGroups";
 
+export interface FilterParams{
+  [FilterSelectsNames.type]: TypeValues
+  [FilterSelectsNames.color]: string
+  [FilterSelectsNames.friend]: FriendValues
+}
 
 export enum FilterSelectsNames {
     color = 'color',
@@ -12,18 +20,22 @@ export enum FilterSelectsNames {
     type = 'type',
 }
 
-interface FilterProps{
-  updateFilter: UpdateFilter
-  avatarColors: string[]
-  search: () => void
-}
+export const Filter = () => {
+  const {filterParams, setLoading, setGroups} = useContext(Context)
 
-export const Filter = ({avatarColors, updateFilter, search}: FilterProps) => {
+  const search = () => {
+      setLoading(true)
+      getGroupsResponse(filterParams).then(data => {
+        setGroups(data)
+        setLoading(false)
+      })
+  }
+
   return (
           <form onSubmit={(e) => e.preventDefault()}> 
-            <TypeSelect updateFilter={updateFilter}/>
-            <ColorSelect updateFilter={updateFilter} avatarColors={avatarColors}/>
-            <FriendSelect updateFilter={updateFilter} />
+            <TypeSelect/>
+            <ColorSelect/>
+            <FriendSelect />
             <FormItem>
               <Button type="submit" size="l" onClick={search} stretched>Искать</Button>
             </FormItem>
