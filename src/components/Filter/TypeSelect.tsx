@@ -20,9 +20,7 @@ export const TypeSelect = () => {
         label: TypeLabels?.[type],
     })
 
-    
-
-return <FilterSelect title="Выберите тип группы"
+    return <FilterSelect title="Выберите тип группы"
                     name={FilterSelectsNames.type}
                     items={Object.values(TypeValues)}
                     getOption={getTypeOption} 

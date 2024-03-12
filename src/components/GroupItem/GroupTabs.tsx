@@ -18,7 +18,11 @@ export const Friends = ({selected, setSelected, friends} : FriendsType) => (
                         </TabsItem>
 )
 
-export const Members = ({members_count}: {members_count: number}) => <TabsItem>Участники: {members_count}</TabsItem>
+export const Members = ({members_count}: {members_count: number}) => (
+    <TabsItem id="tab-members" aria-controls="tab-members">
+        Участники: {members_count}
+    </TabsItem>
+)
 
 export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
     const [selected, setSelected] = useState(false)
@@ -29,9 +33,13 @@ export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
                     <Friends selected={selected} setSelected={setSelected} friends={friends}/>
                 </Tabs>}
                 <CardGrid size="l" spaced={true}>
-                    {selected  && friends?.map((friend: UserType) => {
+                    {selected && friends?.map((friend: UserType) => {
                         const fullName = `${friend.first_name} ${friend.last_name}`
-                        return <Card key={fullName}><Div>{fullName}</Div></Card>
+                        return <Card key={fullName}>
+                                    <Div>
+                                        {fullName}
+                                    </Div>
+                                </Card>
                     })}
                 </CardGrid>
             </>

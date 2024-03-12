@@ -8,7 +8,7 @@ import { Filter, FilterParams, FilterSelectsNames } from './components/Filter';
 import { createContext, useEffect, useState } from 'react';
 import { GetGroupsResponse } from './type';
 import { ALL_ITEMS } from './components/Filter/FilterSelect';
-import { getGroupsResponse } from './api/getGroups';
+import { getGroupsResponse, isResponseSuccess } from './api/getGroups';
 import { GroupSection } from './components/GroupSection';
 
 interface ContextType{
@@ -35,7 +35,7 @@ const App = () => {
         setLoading(true)
         getGroupsResponse(filterParams).then(groups => {
             setGroups(groups)
-            groups.result && groups.data && setColors([...new Set(groups.data.map(group => group.avatar_color || '').filter(i => i))])
+            isResponseSuccess(groups) && setColors([...new Set(groups.data!.map(group => group.avatar_color || '').filter(i => i))])
             setLoading(false)
         })
     }, [])

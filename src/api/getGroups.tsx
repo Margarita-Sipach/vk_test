@@ -5,6 +5,8 @@ import { TypeValues } from "../components/Filter/TypeSelect";
 import { ALL_ITEMS } from "../components/Filter/FilterSelect";
 import initGroups from '../groups.json'
 
+export const isResponseSuccess = ({data, result}: GetGroupsResponse) => result && data?.length
+
 const filterByType = (groups: GroupType[], param: TypeValues) => {
     return groups.filter(group => param === TypeValues.closed && group.closed || param === TypeValues.opened && !group.closed)
   }
