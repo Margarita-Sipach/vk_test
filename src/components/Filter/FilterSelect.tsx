@@ -2,8 +2,6 @@ import { CustomSelectOptionInterface, FormItem, Select } from "@vkontakte/vkui";
 import { ChangeEvent, useContext, useState } from "react";
 import { FilterSelectsNames } from ".";
 import { Context } from "../../App";
-import { TypeValues } from "./TypeSelect";
-import { FriendValues } from "./FriendSelect";
 
 export const ALL_ITEMS = 'all'
 

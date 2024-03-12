@@ -2,9 +2,7 @@ import { Button, FormItem } from "@vkontakte/vkui";
 import { TypeSelect, TypeValues } from "./TypeSelect";
 import { ColorSelect } from "./ColorSelect";
 import { FriendSelect, FriendValues } from "./FriendSelect";
-import { useContext, useState } from "react";
-import { GroupType, UpdateFilter } from "../../type";
-import { ALL_ITEMS } from "./FilterSelect";
+import { useContext } from "react";
 import { Context } from "../../App";
 import { getGroupsResponse } from "../../api/getGroups";
 

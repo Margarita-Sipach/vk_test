@@ -18,7 +18,11 @@ export const Friends = ({selected, setSelected, friends} : FriendsType) => (
                         </TabsItem>
 )
 
-export const Members = ({members_count}: {members_count: number}) => <TabsItem>Участники: {members_count}</TabsItem>
+export const Members = ({members_count}: {members_count: number}) => (
+    <TabsItem id="tab-members" aria-controls="tab-members">
+        Участники: {members_count}
+    </TabsItem>
+)
 
 export const GroupTabs = ({members_count, friends}: GroupTabsType) => {
     const [selected, setSelected] = useState(false)

@@ -20,8 +20,6 @@ export interface GetGroupsResponse {
     id: number
   }
 
-  
-  
   export interface UserType {
     first_name: string,
     last_name: string
